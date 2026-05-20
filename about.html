@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>BattleRush — About</title>
+<meta name="description" content="Learn about BattleRush: our mission, values, and how we build fast, fair, and fun browser games for everyone.">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+
+<style>
+  :root{
+    --bg:#0b1020; --card:#10162a; --ink:#e5e7eb; --muted:#94a3b8;
+    --brand:#22d3ee; --brand2:#8b5cf6; --ring:rgba(148,163,184,.18);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,Arial,sans-serif;
+    background:radial-gradient(1000px 500px at -10% 0%, rgba(139,92,246,.16), transparent 60%), var(--bg);
+    color:var(--ink); line-height:1.7;
+  }
+  a{color:var(--brand); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* Header (site-wide) */
+  .header{position:sticky; top:0; z-index:50; background:#0b1020; color:#e5e7eb; border-bottom:1px solid var(--ring)}
+  .wrap{max-width:1100px; margin:0 auto; padding:0 16px}
+  .nav{display:flex; align-items:center; justify-content:space-between; height:64px; gap:16px}
+  .brand{display:flex; align-items:center; gap:10px; font-weight:800; color:#e5e7eb; text-decoration:none}
+  .brand img{height:28px}
+  .menu{display:flex; gap:14px; align-items:center}
+  .menu a{color:#e5e7eb; opacity:.95}
+  .menu a:hover{opacity:1; text-decoration:underline}
+  .burger{display:none; background:none; border:0; color:#e5e7eb; font-size:24px}
+  @media (max-width:800px){ .menu{display:none} .burger{display:block} }
+
+  /* Page content */
+  .page{max-width:900px; margin:0 auto; padding:28px 20px}
+  .top{display:flex; align-items:center; gap:12px; border-bottom:1px solid rgba(148,163,184,.13); padding-bottom:16px}
+  .top img{height:36px}
+  h1{font-size:clamp(28px,4.6vw,44px); margin:.4em 0 .2em; letter-spacing:-.02em}
+  h2{font-size:20px; margin:22px 0 8px}
+  .card{background:var(--card); border:1px solid rgba(148,163,184,.15); border-radius:16px; padding:18px; margin:14px 0}
+  .kvs{display:grid; grid-template-columns:1fr 1fr; gap:14px}
+  .kvs .card{margin:0}
+  @media (max-width:720px){ .kvs{grid-template-columns:1fr} }
+
+  /* Footer */
+  .footer{border-top:1px solid var(--ring); color:var(--muted); padding:18px 0; text-align:center}
+</style>
+</head>
+<body>
+
+<!-- Site Header -->
+<header class="header">
+  <div class="wrap nav">
+    <a class="brand" href="index.html" aria-label="BattleRush Home">
+      <img src="assets/img/battlerush-logo.svg" alt="BattleRush"><span>BattleRush</span>
+    </a>
+    <nav class="menu" data-nav-menu>
+      <a href="index.html">Home</a>
+      <a href="game.html">Play Game</a>
+      <a href="leaderboard.html">Leaderboard</a>
+      <a href="about.html" style="opacity:1;font-weight:800">About</a>
+      <a href="blog.html">Blog</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="terms.html">Terms</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <button class="burger" data-nav-toggle aria-label="Toggle Menu">☰</button>
+  </div>
+</header>
+
+<!-- About Content -->
+<div class="page">
+  <div class="top">
+    <img src="assets/img/battlerush-logo.svg" alt="BattleRush logo">
+    <strong>About BattleRush</strong>
+  </div>
+
+  <h1>Built for speed. Designed for fair play.</h1>
+  <p>BattleRush is a modern hub for instant-play browser games. We obsess over performance, clarity, and competition so players can jump in quickly and enjoy smooth gameplay with meaningful progress.</p>
+
+  <div class="card">
+    <h2>Our Mission</h2>
+    <p class="muted">Deliver delightful web games that are accessible to everyone — no downloads, no friction, just pure play. We curate quality titles, maintain fair leaderboards, and constantly refine the experience across devices.</p>
+  </div>
+
+  <div class="kvs">
+    <div class="card">
+      <h2>What We Value</h2>
+      <ul>
+        <li><strong>Speed:</strong> minimal assets, optimized rendering, and a focus on first input.</li>
+        <li><strong>Fairness:</strong> transparent scoring, anti-cheat checks, and verified leaderboards.</li>
+        <li><strong>Accessibility:</strong> keyboard & touch support, readable contrast, and simple UI.</li>
+        <li><strong>Community:</strong> friendly competition, opt-in profiles, and evolving events.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2>How We Build</h2>
+      <ul>
+        <li>Performance budgets and image compression keep loads instant.</li>
+        <li>Progressive enhancement ensures older devices still play smoothly.</li>
+        <li>Privacy-respecting analytics guide difficulty tuning.</li>
+        <li>Frequent updates introduce modes, events, and new maps.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>What’s Next</h2>
+    <p>We’re expanding leaderboards, seasonal events, and social features. If you’re a creator, we’d love to collaborate on bringing your game to the web. <a href="contact.html">Contact us</a>.</p>
+  </div>
+
+  <p class="muted">© <span id="y"></span> BattleRush. Play, Compete, Connect.</p>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="wrap">Made with care for fast, fair, and fun play.</div>
+</footer>
+
+<!-- Tiny menu toggle + year -->
+<script>
+(function(){
+  const btn=document.querySelector('[data-nav-toggle]');
+  const menu=document.querySelector('[data-nav-menu]');
+  if(btn && menu){
+    btn.addEventListener('click',()=>{ menu.style.display = (menu.style.display==='flex' ? '' : 'flex'); });
+  }
+  const y=document.getElementById('y'); if(y) y.textContent=new Date().getFullYear();
+})();
+</script>
+
+</body>
+</html>

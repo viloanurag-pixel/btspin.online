@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>BattleRush — Play Free Games & Read Expert Guides</title>
+  <meta name="description" content="BattleRush delivers free browser games, deep guides, and player-first insights. Learn mechanics, strategies, and how games are built—then play instantly.">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <style>
+    :root{--ink:#0f172a;--muted:#475569;--bg:#f8fafc;--card:#ffffff;--ring:rgba(2,6,23,.08);--brand:#ef4444;--brand2:#f59e0b}
+    *{box-sizing:border-box}html,body{margin:0;padding:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;color:var(--ink);background:var(--bg)}
+    a{color:#b45309;text-decoration:none}a:hover{text-decoration:underline}img{max-width:100%;display:block}
+    .wrap{max-width:1160px;margin:0 auto;padding:0 16px}
+    .header{position:sticky;top:0;z-index:50;background:#0b1020;color:#e5e7eb;border-bottom:1px solid rgba(148,163,184,.2)}
+    .nav{display:flex;align-items:center;justify-content:space-between;height:64px;gap:16px}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:18px}
+    .brand img{height:28px}.menu{display:flex;gap:18px;align-items:center}.menu a{color:#e5e7eb;opacity:.95}
+    .cta{background:linear-gradient(90deg,var(--brand) 0%, var(--brand2) 100%);color:#0b1020;padding:8px 14px;border-radius:10px;font-weight:700;box-shadow:0 6px 24px rgba(2,6,23,.25)}
+    .burger{display:none;background:none;border:0;color:#e5e7eb;font-size:24px}@media (max-width:800px){.menu{display:none}.burger{display:block}}
+    .hero{padding:56px 0 48px;color:#e5e7eb;background:radial-gradient(900px 400px at 10% 0%, rgba(239,68,68,.22), transparent), radial-gradient(800px 400px at 90% 10%, rgba(245,158,11,.18), transparent), #0b1020;border-bottom:1px solid rgba(148,163,184,.18)}
+    .tag{display:inline-block;padding:6px 10px;border-radius:999px;background:#fee2e2;color:#7f1d1d;font-size:12px;font-weight:700;margin-right:6px}
+    .hero h1{font-size:42px;line-height:1.1;margin:6px 0 12px}.hero p{max-width:860px;color:#cbd5e1;font-size:18px;margin:0 0 20px}
+    .btns{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px}.btn{display:inline-block;padding:12px 18px;border-radius:12px;font-weight:800}
+    .btn-primary{background:linear-gradient(90deg,var(--brand) 0%, var(--brand2) 100%);color:#0b1020}.btn-ghost{border:1px solid rgba(203,213,225,.3); color:#e5e7eb}
+    .section{padding:48px 0}.grid{display:grid;gap:20px}.grid-3{grid-template-columns:repeat(3,1fr)}.grid-2{grid-template-columns:repeat(2,1fr)}
+    @media (max-width:900px){.grid-3{grid-template-columns:1fr 1fr}}@media (max-width:640px){.grid-3,.grid-2{grid-template-columns:1fr}}
+    .card{background:var(--card);border:1px solid var(--ring);border-radius:16px;padding:18px;box-shadow:0 6px 26px rgba(15,23,42,.05)}.card h3{margin:0 0 6px;font-size:20px}
+    .muted{color:var(--muted)}.lead{font-size:18px;color:#334155}.list{display:grid;gap:12px}.li{display:flex;gap:12px;align-items:flex-start}.dot{width:10px;height:10px;border-radius:999px;background:linear-gradient(90deg,var(--brand),var(--brand2));margin-top:8px}
+    footer{padding:28px 0;color:#94a3b8}.foot{display:flex;gap:18px;flex-wrap:wrap;align-items:center;justify-content:space-between;border-top:1px solid var(--ring);padding-top:18px}
+
+    /* === Popup styles (BattleRush) === */
+    .af-overlay{position:fixed;inset:0;background:rgba(3,6,23,.74);backdrop-filter:saturate(140%) blur(6px);display:flex;align-items:center;justify-content:center;z-index:9999}
+    .af-modal{width:min(92vw,560px);background:#0b1020;color:#e5e7eb;border:1px solid rgba(148,163,184,.25);border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.45);padding:24px 20px 18px;position:relative}
+    .af-close{position:absolute;top:10px;right:12px;border:0;background:transparent;color:#cbd5e1;font-size:24px;cursor:pointer;line-height:1}
+    .af-logo{display:flex;justify-content:center;align-items:center;margin-top:8px;margin-bottom:8px}
+    .af-logo img{height:36px;opacity:.95}
+    #af-title{font-size:22px;margin:6px 0 8px}
+    .af-text{font-size:15px;line-height:1.6;color:#cbd5e1;margin:0 4px 14px}
+    .af-actions{display:flex;gap:10px;justify-content:flex-end}
+    .af-btn{appearance:none;border:0;border-radius:12px;padding:10px 16px;font-weight:700;cursor:pointer;background:#f59e0b;color:#0b1020}
+    .af-btn:hover{filter:brightness(1.03)}
+    .af-secondary{background:transparent;color:#e5e7eb;border:1px solid rgba(148,163,184,.35)}
+    @media (max-width: 480px){.af-modal{padding:18px 14px;border-radius:14px}.af-actions{flex-direction:column}}
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="wrap nav">
+      <a class="brand" href="index.html"><img src="assets/img/battlerush-logo.svg" alt="BattleRush"><span>BattleRush</span></a>
+      <nav class="menu"><a href="index.html">Home</a><a href="game.html">Games</a><a href="about.html">About</a><a href="blog.html">Blog</a><a class="cta" href="submit.html">Submit Game</a></nav>
+      <button class="burger" aria-label="Menu" onclick="document.querySelector('.menu').style.display = document.querySelector('.menu').style.display==='flex'?'':'flex'">☰</button>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="wrap">
+      <span class="tag">Play • Learn • Win</span>
+      <h1>BattleRush: Free games that hook you — guides that level you up.</h1>
+      <p>Fans aise content chahte hain jo unko seedha fayda de: <strong>meta updates</strong>, <strong>strategy guides</strong>, aur devlogs jo dikhaye ke <em>games bante kaise hain</em>. Yahan aap turant khelo, phir wahi se seekho — to play smarter & build faster.</p>
+      <div class="btns"><a class="btn btn-primary" href="game.html">Start Playing</a><a class="btn btn-ghost" href="blog.html">Trending Sports Reads</a></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap grid grid-3">
+      <div class="card"><h3>Instant-Play Library</h3><p class="muted">No installs • Mobile-ready • Lag-free. Arcade, Strategy, Racing, Sports, Puzzle, Roguelike.</p></div>
+      <div class="card"><h3>Guides that Matter</h3><p class="muted">Movement tech, map awareness, progression routes, currency planning, boss patterns.</p></div>
+      <div class="card"><h3>Learn to Build</h3><p class="muted">Phaser → Unity WebGL → Godot. Reusable snippets, performance checklists, deployment.</p></div>
+    </div>
+  </section>
+
+  <section class="section" style="background:#fff">
+    <div class="wrap grid grid-2">
+      <div class="card">
+        <h3 style="margin-top:0">Drift Legends</h3>
+        <p class="lead">Grip, drift angle, boost timing — racing ka core loop jo wapas laata rahe.</p>
+        <p class="muted">Learn: input curves, camera follow smoothing, track spline, ghost replays.</p>
+        <p><a href="game.html">Play Now →</a> • <a href="blog.html">Build Notes</a></p>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">Arena Strike</h3>
+        <p class="lead">Quick TTK arena shooter — map control, resource denial, ultimate economy.</p>
+        <p class="muted">Learn: hit-scan vs projectile, damage fall-off, aim-cones, spawn logic.</p>
+        <p><a href="game.html">Play Now →</a> • <a href="blog.html">Build Notes</a></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap grid grid-3">
+      <div class="card"><h3>Meta Updates</h3>
+        <div class="list">
+          <div class="li"><span class="dot"></span><p class="muted">Weekly nerfs/buffs & balance notes — kya pick karein abhi.</p></div>
+          <div class="li"><span class="dot"></span><p class="muted">Counter-plays & match-ups: enemy X → best response Y.</p></div>
+          <div class="li"><span class="dot"></span><p class="muted">Controller vs mouse — smooth aim curves.</p></div>
+        </div>
+      </div>
+      <div class="card"><h3>Progression Paths</h3>
+        <div class="list">
+          <div class="li"><span class="dot"></span><p class="muted">Best gold/XP routes without burnout.</p></div>
+          <div class="li"><span class="dot"></span><p class="muted">Early/mid/late-game build swaps for consistency.</p></div>
+          <div class="li"><span class="dot"></span><p class="muted">Seasonal checklists: week-by-week goals.</p></div>
+        </div>
+      </div>
+      <div class="card"><h3>Performance & Settings</h3>
+        <div class="list">
+          <div class="li"><span class="dot"></span><p class="muted">60+ FPS on low-end: texture size, V-sync, post-fx tradeoffs.</p></div>
+          <div class="li"><span class="dot"></span><p class="muted">Visibility first: color-blind palettes, crosshair contrast.</p></div>
+          <div class="li"><span class="dot"></span><p class="muted">Latency hygiene: input delay & browser tweaks.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="background:#fff">
+    <div class="wrap grid grid-3">
+      <div class="card"><h3>Phaser 3 Platformer</h3><p class="muted">Collisions, coyote time, jump buffer, coins, parallax, HUD.</p><p><a href="about.html">Tutorial →</a></p></div>
+      <div class="card"><h3>Unity WebGL Shooter</h3><p class="muted">Pooling, recoil, ADS sway, damage numbers, build compression.</p><p><a href="about.html">Tutorial →</a></p></div>
+      <div class="card"><h3>Godot 4 Arena</h3><p class="muted">Signals, FSM, scene composition, camera shake, save slots.</p><p><a href="about.html">Tutorial →</a></p></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap card" style="text-align:center">
+      <h3 style="margin-top:4px">Play smarter. Build faster. Win better.</h3>
+      <p class="muted">BattleRush me curated games, detailed guides, aur no-nonsense tips milte hain.</p>
+      <div class="btns" style="justify-content:center">
+        <a class="btn btn-primary" href="game.html">Play Free Games</a>
+        <a class="btn" style="border:1px solid var(--ring)" href="blog.html">Read Trending Sports</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="wrap foot"><p>© <span id="y"></span> BattleRush</p><p><a href="privacy.html">Privacy</a> • <a href="terms.html">Terms</a> • <a href="sitemap.html">Sitemap</a></p></footer>
+
+  <!-- === Popup script (BattleRush) === -->
+  <script>
+  (function () {
+    function onReady(fn){
+      if(document.readyState==="complete"||document.readyState==="interactive"){setTimeout(fn,1);}
+      else{document.addEventListener("DOMContentLoaded",fn);}
+    }
+    onReady(function(){
+      // Show once per session
+      if (sessionStorage.getItem("br_popup_shown")==="1") return;
+      sessionStorage.setItem("br_popup_shown","1");
+
+      // Build overlay
+      var overlay=document.createElement("div");
+      overlay.className="af-overlay";
+      overlay.innerHTML=[
+        '<div class="af-modal" role="dialog" aria-modal="true" aria-labelledby="af-title">',
+        '  <button class="af-close" aria-label="Close">×</button>',
+        '  <div class="af-logo"><img src="assets/img/battlerush-logo.svg" alt="BattleRush"></div>',
+        '  <h2 id="af-title">Privacy & Terms</h2>',
+        '  <p class="af-text">We use basic cookies and lightweight analytics to keep gameplay fast and improve content. By continuing, you agree to our Terms and acknowledge our Privacy Policy.</p>',
+        '  <div class="af-actions">',
+        '    <button class="af-btn af-accept">Accept</button>',
+        '    <button class="af-btn af-secondary af-decline">Close</button>',
+        '  </div>',
+        '</div>'
+      ].join("");
+
+      document.body.appendChild(overlay);
+      var originalOverflow=document.body.style.overflow;
+      document.body.style.overflow="hidden";
+
+      function cleanup(){
+        document.body.style.overflow=originalOverflow || "";
+        overlay.remove();
+      }
+      function go(url){ window.location.href=url; }
+
+      overlay.querySelector(".af-close").addEventListener("click", function(){
+        cleanup(); go("privacy.html");
+      });
+      overlay.querySelector(".af-decline").addEventListener("click", function(){
+        cleanup(); go("privacy.html");
+      });
+      overlay.querySelector(".af-accept").addEventListener("click", function(){
+        cleanup(); go("terms.html");
+      });
+      document.addEventListener("keydown", function(e){
+        if(e.key==="Escape"){ cleanup(); go("privacy.html"); }
+      }, { once: true });
+    });
+  })();
+  </script>
+
+  <script>document.getElementById('y').textContent=new Date().getFullYear()</script>
+  <script src="assets/js/popup.js"></script>
+</body>
+</html>

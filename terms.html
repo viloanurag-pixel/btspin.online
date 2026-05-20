@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>BattleRush — Terms of Service</title>
+<meta name="description" content="BattleRush Terms of Service: acceptable use, IP, disclaimers, and changes.">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
+<!-- Keep your project stylesheet if present -->
+<link rel="stylesheet" href="assets/css/style.css">
+
+<style>
+  :root{ --ring: rgba(148,163,184,.25); --ink:#0f172a; --bg:#f8fafc; --muted:#475569; }
+  *{ box-sizing:border-box }
+  html,body{ margin:0; font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; color:var(--ink); background:var(--bg) }
+
+  /* Header */
+  .header{ position:sticky; top:0; z-index:50; background:#0b1020; color:#e5e7eb; border-bottom:1px solid var(--ring) }
+  .wrap{ max-width:1160px; margin:0 auto; padding:0 16px }
+  .nav{ display:flex; align-items:center; justify-content:space-between; height:64px; gap:16px }
+  .brand{ display:flex; gap:10px; align-items:center; font-weight:800; color:#e5e7eb; text-decoration:none }
+  .brand img{ height:28px }
+  .menu{ display:flex; gap:14px; align-items:center }
+  .menu a{ color:#e5e7eb; text-decoration:none; opacity:.95 }
+  .menu a:hover{ opacity:1; text-decoration:underline }
+  .burger{ display:none; background:none; border:0; color:#e5e7eb; font-size:24px }
+  @media (max-width:800px){ .menu{display:none} .burger{display:block} }
+
+  /* Hero */
+  .hero{ background:#0b1020; color:#e5e7eb; padding:36px 0; border-bottom:1px solid var(--ring) }
+  .hero h1{ margin:0 0 6px; font-size:28px }
+  .hero p{ margin:0; color:#cbd5e1 }
+
+  /* Content */
+  .section{ padding:24px 0 }
+  .grid{ display:grid; gap:16px }
+  .card{ background:#fff; border:1px solid var(--ring); border-radius:16px; padding:16px; box-shadow:0 6px 26px rgba(15,23,42,.05) }
+  h3{ margin:0 0 8px }
+  .muted{ color:var(--muted) }
+
+  /* Footer */
+  .footer{ background:#0b1020; color:#94a3b8; padding:18px 0; border-top:1px solid var(--ring) }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+  <div class="wrap nav">
+    <a class="brand" href="index.html" aria-label="BattleRush Home">
+      <img src="assets/img/battlerush-logo.svg" alt="BattleRush"><span>BattleRush</span>
+    </a>
+    <nav class="menu" data-nav-menu>
+      <a href="index.html">Home</a>
+      <a href="game.html">Play Game</a>
+      <a href="leaderboard.html">Leaderboard</a>
+      <a href="about.html">About</a>
+      <a href="blog.html">Blog</a>
+      <a href="faq.html">FAQ</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="terms.html" style="opacity:1;font-weight:800">Terms</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <button class="burger" data-nav-toggle aria-label="Toggle Menu">☰</button>
+  </div>
+</header>
+
+<!-- Hero -->
+<header class="hero">
+  <div class="wrap">
+    <h1>Terms of Service</h1>
+    <p>Last updated: <time datetime="2025-08-22">22 Aug 2025</time></p>
+  </div>
+</header>
+
+<!-- Content -->
+<section class="section">
+  <div class="wrap grid">
+    <article class="card">
+      <h3>Use of the Site</h3>
+      <p class="muted">Use BattleRush for personal, non-commercial purposes. Don’t interfere with or reverse-engineer the Service beyond what applicable law permits.</p>
+    </article>
+
+    <article class="card">
+      <h3>Intellectual Property</h3>
+      <p class="muted">All code, design, and artwork are owned by us or our licensors. You may not reuse our assets without written permission unless allowed by law.</p>
+    </article>
+
+    <article class="card">
+      <h3>Disclaimer</h3>
+      <p class="muted">The Service is provided “as is” and “as available,” without warranties of any kind, express or implied.</p>
+    </article>
+
+    <article class="card">
+      <h3>Limitation of Liability</h3>
+      <p class="muted">To the fullest extent permitted by law, we are not liable for indirect, incidental, or consequential damages arising from your use of the Service.</p>
+    </article>
+
+    <article class="card">
+      <h3>Changes</h3>
+      <p class="muted">We may update these Terms and the Service. If you continue using the Service after updates take effect, you agree to the revised Terms.</p>
+    </article>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="wrap" style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+    <div>© <span id="y"></span> BattleRush. All rights reserved.</div>
+    <div style="display:flex;gap:12px;align-items:center">
+      <span class="muted">Player-first • Minimal data</span>
+    </div>
+  </div>
+</footer>
+
+<!-- Tiny menu toggle + year -->
+<script>
+(function(){
+  const btn=document.querySelector('[data-nav-toggle]');
+  const menu=document.querySelector('[data-nav-menu]');
+  if(btn && menu){
+    btn.addEventListener('click',()=>{ menu.style.display = (menu.style.display==='flex' ? '' : 'flex'); });
+  }
+  const y=document.getElementById('y'); if(y) y.textContent=new Date().getFullYear();
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>BattleRush — Pong</title>
+<meta name="description" content="BattleRush Pong: fast, responsive canvas game with clean controls.">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+
+<!-- Optional: if you have a global stylesheet, keep this.
+<link rel="stylesheet" href="assets/css/style.css" />
+-->
+
+<style>
+  :root{
+    --ink:#0f172a; --muted:#64748b; --bg:#0b1020; --ring:rgba(148,163,184,.25);
+    --brand:#ef4444; --brand2:#f59e0b; --card:#0f172a; --light:#e5e7eb;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--light);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+
+  /* Header (consistent with BattleRush) */
+  .header{position:sticky;top:0;z-index:50;background:#0b1020;border-bottom:1px solid var(--ring)}
+  .wrap{max-width:1160px;margin:0 auto;padding:0 16px}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:64px;gap:16px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:800}
+  .brand img{height:28px}
+  .menu{display:flex;gap:14px;align-items:center}
+  .menu a{color:#e5e7eb;text-decoration:none;opacity:.95}
+  .menu a:hover{opacity:1;text-decoration:underline}
+  .burger{display:none;background:none;border:0;color:#e5e7eb;font-size:24px}
+  @media (max-width:800px){ .menu{display:none} .burger{display:block} }
+
+  /* Page */
+  h1,p{text-align:center;margin:0}
+  h1{margin-top:22px;font-size:28px}
+  .sub{color:#cbd5e1;margin-top:6px}
+
+  /* Canvas container */
+  .stage{padding:18px 0 32px}
+  canvas{display:block;margin:18px auto 0;border:4px solid #222832;background:#111827;width:min(96vw, 900px);height:auto}
+
+  /* HUD */
+  .hud{display:flex;justify-content:center;gap:12px;margin-top:10px}
+  .badge{font-size:12px;padding:6px 10px;border-radius:999px;border:1px solid var(--ring);color:#cbd5e1}
+  .kbd{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;background:#0f172a;border:1px solid var(--ring);padding:2px 6px;border-radius:6px}
+
+  /* Touch controls (show on mobile) */
+  .touch{display:none;justify-content:center;gap:14px;margin-top:12px}
+  .touch button{background:linear-gradient(90deg,var(--brand),var(--brand2));color:#0b1020;border:0;border-radius:12px;padding:12px 18px;font-weight:800;box-shadow:0 6px 24px rgba(0,0,0,.25)}
+  @media (max-width:640px){ .touch{display:flex} }
+</style>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+  <div class="wrap nav">
+    <a class="brand" href="index.html" aria-label="BattleRush Home">
+      <img src="assets/img/battlerush-logo.svg" alt="BattleRush"><span>BattleRush</span>
+    </a>
+    <nav class="menu" data-nav-menu>
+      <a href="index.html">Home</a>
+      <a href="game.html" style="opacity:1;font-weight:800">Play Game</a>
+      <a href="leaderboard.html">Leaderboard</a>
+      <a href="about.html">About</a>
+      <a href="blog.html">Blog</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="terms.html">Terms</a>
+    </nav>
+    <button class="burger" data-nav-toggle aria-label="Toggle Menu">☰</button>
+  </div>
+</header>
+
+<!-- Title -->
+<h1>BattleRush — Pong</h1>
+<p class="sub">Move with <span class="kbd">↑</span>/<span class="kbd">↓</span>. <span class="kbd">Space</span> = Pause/Resume • <span class="kbd">R</span> = Reset • First to 7 wins.</p>
+
+<!-- Canvas + HUD -->
+<div class="stage">
+  <canvas id="pong" width="900" height="540"></canvas>
+  <div class="hud">
+    <span class="badge">Player: Blue</span>
+    <span class="badge">CPU: Red</span>
+    <span class="badge">Difficulty scales with rally length</span>
+  </div>
+  <div class="touch">
+    <button id="btnUp">▲ Up</button>
+    <button id="btnDown">▼ Down</button>
+    <button id="btnPause">⏯ Pause</button>
+  </div>
+</div>
+
+<script>
+/* simple nav toggle for mobile */
+(function(){
+  const btn=document.querySelector('[data-nav-toggle]');
+  const menu=document.querySelector('[data-nav-menu]');
+  if(btn && menu){
+    btn.addEventListener('click',()=> {
+      menu.style.display = (menu.style.display==='flex' ? '' : 'flex');
+    });
+  }
+})();
+</script>
+
+<script>
+(function(){
+  const canvas = document.getElementById('pong');
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+
+  const PADDLE_H = 90, PADDLE_W = 12, MAX_SCORE = 7;
+  const START_SPEED = 5, SPEED_INC = 0.15, MAX_BOUNCE_ANGLE = Math.PI/3; // ~60°
+
+  let player = { x: 24,       y: H/2 - PADDLE_H/2, w: PADDLE_W, h: PADDLE_H, score: 0, dy: 0 };
+  let ai     = { x: W-24-PADDLE_W, y: H/2 - PADDLE_H/2, w: PADDLE_W, h: PADDLE_H, score: 0, speed: 3 };
+  let ball   = { x: W/2, y: H/2, r: 8, speed: START_SPEED, angle: Math.random()<0.5 ? 0.25*Math.PI : -0.25*Math.PI, rally: 0 };
+
+  let paused = false, finished = false;
+
+  function vx(){ return Math.cos(ball.angle) * ball.speed; }
+  function vy(){ return Math.sin(ball.angle) * ball.speed; }
+
+  function resetBall(dir = (Math.random()<0.5 ? 1 : -1)){
+    ball.x = W/2; ball.y = H/2;
+    ball.speed = START_SPEED;
+    // randomize vertical angle a bit
+    const sign = Math.random()<0.5 ? 1 : -1;
+    ball.angle = (sign * 0.25 * Math.PI);
+    if (dir < 0) ball.angle = Math.PI - ball.angle; // send towards player or AI
+    ball.rally = 0;
+  }
+
+  function clamp(v,min,max){ return Math.max(min, Math.min(max, v)); }
+
+  function update(){
+    if (paused || finished) return;
+
+    // move player
+    player.y += player.dy;
+    player.y = clamp(player.y, 0, H - player.h);
+
+    // AI follow with slight easing and difficulty scaling with rally length
+    const target = ball.y - ai.h/2;
+    const diff = target - ai.y;
+    const follow = Math.sign(diff) * Math.min(Math.abs(diff), ai.speed + ball.rally*0.02);
+    ai.y = clamp(ai.y + follow, 0, H - ai.h);
+
+    // move ball
+    ball.x += vx();
+    ball.y += vy();
+
+    // top/bottom
+    if (ball.y - ball.r < 0){ ball.y = ball.r; ball.angle = -ball.angle; }
+    if (ball.y + ball.r > H){ ball.y = H - ball.r; ball.angle = -ball.angle; }
+
+    // paddle collisions with bounce angle based on contact point
+    function collide(p){
+      const withinY = ball.y > p.y && ball.y < p.y + p.h;
+      if (!withinY) return false;
+
+      if (p === player && ball.x - ball.r <= p.x + p.w){
+        ball.x = p.x + p.w + ball.r;
+      } else if (p === ai && ball.x + ball.r >= p.x){
+        ball.x = p.x - ball.r;
+      } else return false;
+
+      // Where did it hit relative to paddle center? (-1..1)
+      const rel = ((ball.y) - (p.y + p.h/2)) / (p.h/2);
+      const bounce = clamp(rel, -1, 1) * MAX_BOUNCE_ANGLE;
+
+      // New angle: reflect horizontally and add bounce
+      if (p === player){
+        ball.angle = bounce; // rightward
+      } else {
+        ball.angle = Math.PI - bounce; // leftward
+      }
+
+      // Speed up a touch each hit
+      ball.speed = Math.min(ball.speed + SPEED_INC, 14);
+      ball.rally++;
+      return true;
+    }
+
+    collide(player);
+    collide(ai);
+
+    // scoring
+    if (ball.x < -ball.r*2){
+      ai.score++; resetBall(1);
+    }
+    if (ball.x > W + ball.r*2){
+      player.score++; resetBall(-1);
+    }
+
+    // end
+    if (player.score >= MAX_SCORE || ai.score >= MAX_SCORE){
+      finished = true;
+    }
+  }
+
+  function drawNet(){
+    ctx.fillStyle = "#334155";
+    for (let y = 0; y < H; y += 24){
+      ctx.fillRect(W/2 - 1, y, 2, 14);
+    }
+  }
+
+  function draw(){
+    // table
+    ctx.fillStyle = "#111827";
+    ctx.fillRect(0,0,W,H);
+
+    drawNet();
+
+    // scores
+    ctx.fillStyle = "#e5e7eb";
+    ctx.font = "28px Inter, ui-sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText(player.score, W/2 - 40, 44);
+    ctx.fillText(ai.score,     W/2 + 40, 44);
+
+    // paddles
+    ctx.fillStyle = "#3B82F6"; // blue
+    ctx.fillRect(player.x, player.y, player.w, player.h);
+    ctx.fillStyle = "#EF4444"; // red
+    ctx.fillRect(ai.x, ai.y, ai.w, ai.h);
+
+    // ball
+    ctx.fillStyle = "#fff";
+    ctx.beginPath(); ctx.arc(ball.x, ball.y, ball.r, 0, Math.PI*2); ctx.fill();
+
+    if (paused && !finished){
+      ctx.fillStyle = "rgba(11,16,32,.6)";
+      ctx.fillRect(0,0,W,H);
+      ctx.fillStyle = "#e5e7eb";
+      ctx.font = "24px Inter";
+      ctx.fillText("Paused — press Space to resume", W/2, H/2);
+    }
+
+    if (finished){
+      ctx.fillStyle = "rgba(11,16,32,.6)";
+      ctx.fillRect(0,0,W,H);
+      ctx.fillStyle = "#e5e7eb";
+      ctx.font = "28px Inter";
+      ctx.fillText(player.score>=MAX_SCORE ? "You win!" : "Computer wins!", W/2, H/2);
+      ctx.font = "18px Inter";
+      ctx.fillText("Press R to restart", W/2, H/2 + 32);
+    }
+  }
+
+  function frame(){
+    update();
+    draw();
+    requestAnimationFrame(frame);
+  }
+  frame();
+
+  // keyboard
+  window.addEventListener('keydown', e=>{
+    if (e.key === "ArrowUp")   player.dy = -6;
+    if (e.key === "ArrowDown") player.dy =  6;
+    if (e.code === "Space"){
+      paused = !paused;
+    }
+    if (e.key.toLowerCase() === "r"){
+      player.score = 0; ai.score = 0; finished = false; paused = false; resetBall();
+    }
+  });
+  window.addEventListener('keyup', e=>{
+    if (e.key === "ArrowUp" || e.key === "ArrowDown") player.dy = 0;
+  });
+
+  // touch controls
+  const up = document.getElementById('btnUp');
+  const down = document.getElementById('btnDown');
+  const pauseBtn = document.getElementById('btnPause');
+  function hold(el, on, off){
+    let t; const start = ()=>{ on(); t = setInterval(on, 16); };
+    const end   = ()=>{ clearInterval(t); off && off(); };
+    el.addEventListener('touchstart', (e)=>{ e.preventDefault(); start(); });
+    el.addEventListener('touchend',   (e)=>{ e.preventDefault(); end(); });
+    el.addEventListener('mousedown', start);
+    el.addEventListener('mouseup', end);
+    el.addEventListener('mouseleave', end);
+  }
+  hold(up,   ()=>{ player.dy = -6; }, ()=>{ player.dy = 0; });
+  hold(down, ()=>{ player.dy =  6; }, ()=>{ player.dy = 0; });
+  pauseBtn.addEventListener('click', ()=>{ paused = !paused; });
+
+})();
+</script>
+</body>
+</html>

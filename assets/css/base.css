@@ -1,0 +1,22 @@
+/* BattleRush base theme */
+:root{
+  --bg:#0b1020;--card:#10162a;--ink:#e5e7eb;--muted:#94a3b8;--brand:#22d3ee;--brand2:#8b5cf6;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,Arial,sans-serif;background:radial-gradient(1200px 600px at 10% -10%, rgba(139,92,246,.2), transparent 60%),radial-gradient(800px 400px at 110% 10%, rgba(34,211,238,.15), transparent 60%), var(--bg);color:var(--ink);line-height:1.6}
+a{color:var(--brand);text-decoration:none}
+header.gn{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 24px;border-bottom:1px solid rgba(148,163,184,.13);backdrop-filter:saturate(120%) blur(4px)}
+header.gn .logo{display:flex;align-items:center;gap:12px}
+header.gn .logo img{height:40px}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:12px 16px;border-radius:999px;background:linear-gradient(90deg,var(--brand),var(--brand2));color:#081224;font-weight:700;border:0;cursor:pointer;transition:transform .15s ease,box-shadow .15s ease}
+.btn:hover{transform:translateY(-1px)}
+.container{max-width:1120px;margin:0 auto;padding:0 20px}
+footer.gn{border-top:1px solid rgba(148,163,184,.13);padding:26px 20px;color:var(--muted);text-align:center}
+/* modal (popup) basics */
+.modal-backdrop{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(8,12,24,.6);backdrop-filter:blur(2px);z-index:9999}
+.modal{width:min(560px,90vw);background:var(--card);border:1px solid rgba(148,163,184,.2);border-radius:16px;padding:18px}
+.modal h3{margin:0 0 6px;font-size:20px}
+.modal p{margin:0 0 14px;color:var(--muted)}
+.modal .actions{display:flex;gap:10px;flex-wrap:wrap}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid rgba(148,163,184,.25)}
+@media (max-width:720px){header.gn nav{display:flex;gap:12px;flex-wrap:wrap}}

@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>BattleRush — Dice</title>
+<meta name="description" content="BattleRush Dice is a playful, responsive game page with a fast canvas runner.">
+
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
+<!-- Your styles (keep if they exist in your project) -->
+<link rel="stylesheet" href="assets/css/style.css">
+<!-- If you actually have a base.css inside assets/css/, keep this next line; otherwise remove it -->
+<!-- <link rel="stylesheet" href="assets/css/base.css"> -->
+
+<style>
+  /* Minimal safety styles (won’t clash with your CSS) */
+  :root { --ring: rgba(148,163,184,.25); }
+  body { font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin:0; color:#0f172a; background:#f8fafc; }
+  .header { position: sticky; top:0; z-index:50; background:#0b1020; color:#e5e7eb; border-bottom:1px solid var(--ring); }
+  .wrap { max-width:1160px; margin:0 auto; padding:0 16px; }
+  .nav { display:flex; align-items:center; justify-content:space-between; height:64px; gap:16px; }
+  .brand { display:flex; align-items:center; gap:10px; font-weight:800; text-decoration:none; color:#e5e7eb; }
+  .brand img { height:28px; }
+  .menu { display:flex; gap:14px; align-items:center; }
+  .menu a { color:#e5e7eb; text-decoration:none; opacity:.95; }
+  .menu a:hover { opacity:1; text-decoration:underline; }
+  .burger { display:none; background:none; border:0; color:#e5e7eb; font-size:24px; }
+  @media (max-width:800px){ .menu{display:none} .burger{display:block} }
+
+  .hero { background:#0b1020; color:#e5e7eb; padding:40px 0; border-bottom:1px solid var(--ring); }
+  .hero h1 { margin:0 0 6px; font-size:28px; }
+  .hero p { margin:0 0 14px; color:#cbd5e1; }
+  .btn { display:inline-block; padding:10px 14px; border-radius:10px; font-weight:800; text-decoration:none; color:#0b1020; background:linear-gradient(90deg,#ef4444,#f59e0b); }
+  .footer { background:#0b1020; color:#94a3b8; padding:18px 0; border-top:1px solid var(--ring); }
+  .badge { font-size:12px; border:1px solid var(--ring); border-radius:999px; padding:6px 10px; color:#cbd5e1; }
+</style>
+</head>
+
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    background: url("https://raw.githubusercontent.com/neo-aussie/img/refs/heads/main/blacklotus%20lap.png") no-repeat center center;
+    background-size: cover;
+  }
+ 
+  /* Mobile (max 600px) */
+  @media (max-width: 600px) {
+    body {
+      background-image: url("https://raw.githubusercontent.com/neo-aussie/img/refs/heads/main/blacklotus%20mob.png");
+    }
+  }
+ 
+  /* Tablet (601px – 1024px) */
+  @media (min-width: 601px) and (max-width: 1024px) {
+    body {
+      background-image: url("https://raw.githubusercontent.com/neo-aussie/img/refs/heads/main/blacklotus%20mob.png");
+    }
+  }
+ 
+  /* Desktop (above 1024px) */
+  @media (min-width: 1025px) {
+    body {
+      background-image: url("https://raw.githubusercontent.com/neo-aussie/img/refs/heads/main/blacklotus%20lap.png");
+    }
+  }
+</style>
+ 
+</body>
+</html>

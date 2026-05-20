@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>BattleRush — Leaderboard</title>
+<meta name="description" content="Track your top BattleRush Dice victories, saved in your browser.">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
+<!-- Keep if present -->
+<link rel="stylesheet" href="assets/css/style.css">
+
+<style>
+  :root{ --ring: rgba(148,163,184,.25); --ink:#0f172a; --bg:#f8fafc; --muted:#475569; }
+  *{ box-sizing:border-box }
+  body{ margin:0; font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; color:var(--ink); background:var(--bg) }
+
+  /* Header */
+  .header{ position:sticky; top:0; z-index:50; background:#0b1020; color:#e5e7eb; border-bottom:1px solid var(--ring) }
+  .wrap{ max-width:1160px; margin:0 auto; padding:0 16px }
+  .nav{ display:flex; align-items:center; justify-content:space-between; height:64px; gap:16px }
+  .brand{ display:flex; gap:10px; align-items:center; font-weight:800; color:#e5e7eb; text-decoration:none }
+  .brand img{ height:28px }
+  .menu{ display:flex; gap:14px; align-items:center }
+  .menu a{ color:#e5e7eb; text-decoration:none; opacity:.95 }
+  .menu a:hover{ opacity:1; text-decoration:underline }
+  .burger{ display:none; background:none; border:0; color:#e5e7eb; font-size:24px }
+  @media (max-width:800px){ .menu{display:none} .burger{display:block} }
+
+  /* Hero */
+  .hero{ background:#0b1020; color:#e5e7eb; padding:36px 0; border-bottom:1px solid var(--ring) }
+  .hero h1{ margin:0 0 6px; font-size:28px }
+  .hero p{ margin:0; color:#cbd5e1 }
+
+  /* Section */
+  .section{ padding:24px 0 }
+  .card{ background:#fff; border:1px solid var(--ring); border-radius:16px; padding:16px; box-shadow:0 6px 26px rgba(15,23,42,.05) }
+
+  /* Controls */
+  .controls{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:12px }
+  .btn{ display:inline-block; padding:8px 12px; border-radius:10px; border:1px solid var(--ring); background:#fff; cursor:pointer; font-weight:700 }
+  .btn.primary{ background:linear-gradient(90deg,#ef4444,#f59e0b); color:#0b1020; border:0 }
+  .muted{ color:var(--muted) }
+
+  table{ width:100%; border-collapse:collapse }
+  thead th{ text-align:left; font-size:14px; color:#334155; border-bottom:1px solid var(--ring); padding:10px 8px }
+  tbody td{ padding:10px 8px; border-bottom:1px solid rgba(2,6,23,.06); font-size:14px }
+  tbody tr:hover{ background:#f1f5f9 }
+  .empty{ padding:18px; text-align:center; color:#64748b }
+
+  /* Footer */
+  .footer{ background:#0b1020; color:#94a3b8; padding:18px 0; border-top:1px solid var(--ring) }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+  <div class="wrap nav">
+    <a class="brand" href="index.html"><img src="assets/img/battlerush-logo.svg" alt="BattleRush"><span>BattleRush</span></a>
+    <nav class="menu" data-nav-menu>
+      <a href="index.html">Home</a>
+      <a href="game.html">Play Game</a>
+      <a href="leaderboard.html" style="opacity:1;font-weight:800">Leaderboard</a>
+      <a href="about.html">About</a>
+      <a href="blog.html">Blog</a>
+      <a href="faq.html">FAQ</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="terms.html">Terms</a>
+    </nav>
+    <button class="burger" data-nav-toggle aria-label="Toggle Menu">☰</button>
+  </div>
+</header>
+
+<!-- Hero -->
+<header class="hero">
+  <div class="wrap">
+    <h1>Leaderboard</h1>
+    <p>Track your top BattleRush Dice victories — saved right in your browser.</p>
+  </div>
+</header>
+
+<!-- Leaderboard -->
+<section class="section">
+  <div class="wrap">
+    <div class="card">
+      <div class="controls">
+        <button class="btn" id="sortScore">Sort by Score</button>
+        <button class="btn" id="sortTime">Sort by Time</button>
+        <button class="btn" id="clear">Clear</button>
+        <button class="btn primary" id="export">Export JSON</button>
+        <span class="muted" id="count"></span>
+      </div>
+      <div id="lb" class="empty">Loading…</div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="wrap">© <span id="y"></span> BattleRush. All rights reserved.</div>
+</footer>
+
+<script>
+/* Mobile menu toggle */
+(function(){
+  const btn=document.querySelector('[data-nav-toggle]');
+  const menu=document.querySelector('[data-nav-menu]');
+  if(btn && menu){ btn.addEventListener('click',()=>{ menu.style.display = (menu.style.display==='flex'?'':'flex'); }); }
+})();
+</script>
+
+<script>
+(function(){
+  const KEY = 'sl_leaderboard';        // same storage key you used
+  const MAX_ROWS = 50;
+  const el = document.getElementById('lb');
+  const countEl = document.getElementById('count');
+
+  // Load
+  function load(){
+    try {
+      const data = JSON.parse(localStorage.getItem(KEY) || '[]');
+      return Array.isArray(data) ? data : [];
+    } catch(e){ return []; }
+  }
+
+  // Render table
+  function render(rows){
+    if(!rows.length){
+      el.className = 'empty';
+      el.textContent = 'No wins yet. Roll the dice and start climbing!';
+      countEl.textContent = '';
+      return;
+    }
+    el.className = '';
+    const body = rows.slice(0, MAX_ROWS).map((r,i)=>{
+      const when = new Date(r.at || Date.now()).toLocaleString();
+      const score = (r.score!=null) ? r.score : (r.moves!=null ? r.moves : '-');
+      const name = (r.name || 'You');
+      return `<tr>
+        <td>#${i+1}</td>
+        <td>${name}</td>
+        <td>${score} moves</td>
+        <td>${when}</td>
+      </tr>`;
+    }).join('');
+    el.innerHTML = `
+      <table>
+        <thead>
+          <tr><th>Rank</th><th>Name</th><th>Result</th><th>When</th></tr>
+        </thead>
+        <tbody>${body}</tbody>
+      </table>`;
+    countEl.textContent = rows.length + ' record' + (rows.length===1?'':'s');
+  }
+
+  // Sort helpers
+  function byScoreAsc(a,b){
+    const sa=(a.score??a.moves??Infinity), sb=(b.score??b.moves??Infinity);
+    return sa - sb;
+  }
+  function byTimeDesc(a,b){
+    return (b.at||0) - (a.at||0);
+  }
+
+  // Actions
+  const sortScoreBtn = document.getElementById('sortScore');
+  const sortTimeBtn  = document.getElementById('sortTime');
+  const clearBtn     = document.getElementById('clear');
+  const exportBtn    = document.getElementById('export');
+
+  let rows = load();
+  render(rows);
+
+  sortScoreBtn.addEventListener('click', ()=>{ rows = rows.slice().sort(byScoreAsc); render(rows); });
+  sortTimeBtn.addEventListener('click',  ()=>{ rows = rows.slice().sort(byTimeDesc); render(rows); });
+  clearBtn.addEventListener('click', ()=>{
+    if(confirm('Clear all saved leaderboard entries?')){
+      localStorage.removeItem(KEY);
+      rows = [];
+      render(rows);
+    }
+  });
+  exportBtn.addEventListener('click', ()=>{
+    const data = JSON.stringify(rows, null, 2);
+    const blob = new Blob([data], {type:'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'battlerush-leaderboard.json';
+    document.body.appendChild(a); a.click(); a.remove();
+    URL.revokeObjectURL(url);
+  });
+
+  // Year
+  document.getElementById('y').textContent = new Date().getFullYear();
+})();
+</script>
+
+</body>
+</html>

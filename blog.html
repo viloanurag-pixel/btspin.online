@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>BattleRush — Trending in Sports</title>
+<meta name="description" content="Trending sports stories across football, cricket, tennis, NBA, F1, and esports with tactics, performance arcs, and fixtures context.">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+
+<style>
+  :root{--ink:#0f172a;--muted:#475569;--bg:#f8fafc;--card:#ffffff;--ring:rgba(2,6,23,.08)}
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;color:var(--ink);background:var(--bg)}
+  a{color:#b45309;text-decoration:none} a:hover{text-decoration:underline}
+
+  /* Header */
+  .header{position:sticky;top:0;z-index:50;background:#0b1020;color:#e5e7eb;border-bottom:1px solid rgba(148,163,184,.25)}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 16px}
+  .nav{display:flex;justify-content:space-between;align-items:center;height:64px;gap:16px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:800;color:#e5e7eb;text-decoration:none}
+  .brand img{height:26px}
+  .menu{display:flex;gap:14px;align-items:center}
+  .menu a{color:#e5e7eb;opacity:.95}
+  .menu a:hover{opacity:1}
+  .burger{display:none;background:none;border:0;color:#e5e7eb;font-size:24px}
+  @media (max-width:800px){.menu{display:none}.burger{display:block}}
+
+  /* Page */
+  .section{padding:32px 0}
+  .grid{display:grid;gap:18px}
+  .grid-3{grid-template-columns:repeat(3,1fr)}
+  @media (max-width:900px){.grid-3{grid-template-columns:1fr 1fr}}
+  @media (max-width:640px){.grid-3{grid-template-columns:1fr}}
+
+  .card{background:var(--card);border:1px solid var(--ring);border-radius:16px;overflow:hidden}
+  .pad{padding:16px}
+  .meta{font-size:12px;color:#64748b;margin-top:6px}
+  .tag{display:inline-block;padding:6px 10px;border-radius:999px;background:#fee2e2;color:#7f1d1d;font-size:12px;font-weight:700;margin-right:6px}
+
+  /* Footer */
+  .footer{border-top:1px solid var(--ring);padding:18px 0;color:#64748b}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="wrap nav">
+    <a class="brand" href="index.html"><img src="assets/img/battlerush-logo.svg" alt="BattleRush"><span>BattleRush</span></a>
+    <nav class="menu" data-nav-menu>
+      <a href="index.html">Home</a>
+      <a href="game.html">Games</a>
+      <a href="about.html">About</a>
+      <a href="blog.html" style="opacity:1;font-weight:800">Blog</a>
+    </nav>
+    <button class="burger" data-nav-toggle aria-label="Toggle Menu">☰</button>
+  </div>
+</header>
+
+<main class="wrap section">
+  <h1 style="margin:0 0 10px">Trending in Sports</h1>
+  <p style="color:#334155;max-width:780px">Fans are reading these now: tactics, transfers, fixtures, performance arcs, and data-driven insights — Football, Cricket, Tennis, NBA, F1, and Esports.</p>
+
+  <div class="grid grid-3" style="margin-top:18px">
+    <article class="card">
+      <div class="pad">
+        <span class="tag">Football</span>
+        <h3>High Press Is Back — & Two Ways to Beat It</h3>
+        <p class="meta">Tactics • 6 min read</p>
+        <p style="color:#475569">Pressing triggers, inverted full-backs, PPDA in plain English — plus the reliable exits: wall passes and third-man runs.</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="pad">
+        <span class="tag">Cricket</span>
+        <h3>Middle-Overs Masterclass: Strike Rotation &gt; Blind Hitting</h3>
+        <p class="meta">Strategy • 5 min read</p>
+        <p style="color:#475569">Why 6–14 overs decide T20 chases: match-ups, field placements, and the math behind singles vs boundary attempts.</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="pad">
+        <span class="tag">Tennis</span>
+        <h3>Serve Patterns That Win Tie-Breaks</h3>
+        <p class="meta">Technique • 4 min read</p>
+        <p style="color:#475569">Deuce-court sliders, body serves, forehand +1 — and simple scouting from broadcast angles.</p>
+      </div>
+    </article>
+  </div>
+
+  <div class="grid grid-3" style="margin-top:18px">
+    <article class="card">
+      <div class="pad">
+        <span class="tag">NBA</span>
+        <h3>Corner 3s vs Rim Attempts: The New Shot Diet</h3>
+        <p class="meta">Analytics • 6 min read</p>
+        <p style="color:#475569">Pace-and-space reshaped help rules; nail help timing now decides games.</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="pad">
+        <span class="tag">F1</span>
+        <h3>Tyre Deg &amp; Undercut Windows Explained</h3>
+        <p class="meta">Racecraft • 5 min read</p>
+        <p style="color:#475569">Undercut vs overcut viability by compound, track temp, dirty air — and memory-friendly pit-loss thresholds.</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="pad">
+        <span class="tag">Esports</span>
+        <h3>Macro That Wins Late Game</h3>
+        <p class="meta">MOBA • 5 min read</p>
+        <p style="color:#475569">Wave management, vision denial, objective timers — the checklist that converts small leads into wins.</p>
+      </div>
+    </article>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="wrap">© <span id="y"></span> BattleRush</div>
+</footer>
+
+<script>
+(function(){
+  // Mobile menu toggle
+  const btn=document.querySelector('[data-nav-toggle]');
+  const menu=document.querySelector('[data-nav-menu]');
+  if(btn && menu){
+    btn.addEventListener('click',()=>{ menu.style.display = (menu.style.display==='flex' ? '' : 'flex'); });
+  }
+  // Year
+  document.getElementById('y').textContent=new Date().getFullYear();
+})();
+</script>
+
+</body>
+</html>
