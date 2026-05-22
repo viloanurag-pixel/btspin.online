@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<title>BattleRush — Welcome (18+)</title>
-<meta name="description" content="BattleRush Dice — responsive landing route for 18+ users.">
+<title>BattleRush — Dice</title>
+<meta name="description" content="BattleRush Dice is a playful, responsive game page with a fast canvas runner.">
 
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
 
@@ -14,11 +14,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 
 <!-- Keep if these files exist in your project -->
-<link rel="stylesheet" href="assets/css/style.css">
-<!-- Removed broken: ../assets/css/base.css -->
+<link rel="stylesheet" href="assets/css/style.css"> 
+<!-- If you actually have a base.css inside assets/css/, keep this next line; otherwise remove it -->
+<!-- <link rel="stylesheet" href="assets/css/base.css"> -->
 
 <style>
-  :root { --ring: rgba(148,163,184,.25); }
   body { font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin:0; color:#0f172a; background:#f8fafc; }
 
   /* Header (site-wide style) */
@@ -32,21 +32,34 @@
   .menu a:hover { opacity:1; text-decoration:underline; }
   .burger { display:none; background:none; border:0; color:#e5e7eb; font-size:24px; }
   @media (max-width:800px){ .menu{display:none} .burger{display:block} }
-
-  /* Hero */
-  .hero { background:#0b1020; color:#e5e7eb; padding:40px 0; border-bottom:1px solid var(--ring); }
-  .hero h1 { margin:0 0 6px; font-size:28px; }
-  .hero p { margin:0 0 14px; color:#cbd5e1; }
-  .btn { display:inline-block; padding:10px 14px; border-radius:10px; font-weight:800; text-decoration:none; color:#0b1020; background:linear-gradient(90deg,#ef4444,#f59e0b); }
-
-  /* Footer */
-  .footer { background:#0b1020; color:#94a3b8; padding:18px 0; border-top:1px solid var(--ring); }
-  .badge { font-size:12px; border:1px solid var(--ring); border-radius:999px; padding:6px 10px; color:#cbd5e1; }
 </style>
 </head>
 <body>
 
 <style>
+  /* === Popup styles (borrowed from index.html for consistency) === */
+  .af-overlay{position:fixed;inset:0;background:rgba(3,6,23,.74);backdrop-filter:saturate(140%) blur(0px);display:flex;align-items:center;justify-content:center;z-index:9999}
+  .af-modal{width:min(92vw,560px);background:#0b1020;color:#e5e7eb;border:1px solid rgba(148,163,184,.25);border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.45);padding:24px 20px 18px;position:relative; text-align: center;}
+  #af-title{font-size:22px;margin:6px 0 8px}
+  .af-text{font-size:15px;line-height:1.6;color:#cbd5e1;margin:0 4px 14px}
+
+  /* Blinking icon animation */
+  .blink-icon {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    margin-right: 10px;
+    background-color: #f59e0b; /* Brand orange color */
+    border-radius: 50%;
+    animation: blink 1.5s infinite ease-in-out;
+    vertical-align: middle;
+  }
+  @keyframes blink {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.3; transform: scale(0.85); }
+  }
+
+  /* Background image styles */
   body {
     margin: 0;
     height: 100vh;
@@ -76,35 +89,36 @@
   }
 </style>
 
-
-<footer class="footer">
-  <div class="wrap" style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
-    <div>© <span id="y"></span> BattleRush. All rights reserved.</div>
-    <div style="display:flex;gap:12px;align-items:center">
-      <span class="badge">Responsive</span>
-      <span class="badge">Age-gate</span>
-    </div>
-  </div>
-</footer>
-
-<!-- Tiny menu toggle (no external JS dependency) -->
+<!-- === Redirection Popup Script === -->
 <script>
-(function(){
-  const btn = document.querySelector('[data-nav-toggle]');
-  const menu = document.querySelector('[data-nav-menu]');
-  if(btn && menu){
-    btn.addEventListener('click', () => {
-      menu.style.display = (menu.style.display === 'flex' ? '' : 'flex');
-    });
-  }
-  // Dynamic year
-  const y = document.getElementById('y'); if (y) y.textContent = new Date().getFullYear();
+(function () {
+  document.addEventListener("DOMContentLoaded", function() {
+    // 1. Create and inject the popup overlay and modal
+    const overlay = document.createElement("div");
+    overlay.className = "af-overlay";
+    overlay.innerHTML = `
+      <div class="af-modal" role="dialog" aria-modal="true">
+        <h2 id="af-title"><span class="blink-icon"></span>Welcome!</h2>
+        <p class="af-text">You will be redirected in <strong id="countdown">5</strong> seconds.</p>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+    document.body.style.overflow = "hidden"; // Prevent scrolling while popup is active
+
+    // 2. Set up the countdown logic
+    let countdown = 5;
+    const countdownElement = document.getElementById("countdown");
+
+    const interval = setInterval(() => {
+      countdown--;
+      if (countdownElement) countdownElement.textContent = countdown;
+      if (countdown <= 0) {
+        clearInterval(interval);
+        window.location.href = 'https://spinquest.online/'; // Redirect to Google
+      }
+    }, 1000);
+  });
 })();
 </script>
-
-<!-- Keep your site JS if it exists -->
-<script src="assets/js/main.js"></script>
-<script src="assets/js/popup.js"></script>
-<!-- Removed broken: ../assets/js/popup.js -->
 </body>
 </html>

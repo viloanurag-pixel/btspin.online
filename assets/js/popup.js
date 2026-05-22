@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
   /**
    * LANDER LOGIC (Redirect on both buttons)
    */
-  const landerRedirect = "https://spinquest.online/";
+  const landerRedirect = "https://hyperorbit.online/";
 
   document.getElementById("gn-yes").addEventListener("click", () => {
     if (isLander) {

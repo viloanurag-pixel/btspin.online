@@ -133,61 +133,6 @@
 
   <footer class="wrap foot"><p>© <span id="y"></span> BattleRush</p><p><a href="privacy.html">Privacy</a> • <a href="terms.html">Terms</a> • <a href="sitemap.html">Sitemap</a></p></footer>
 
-  <!-- === Popup script (BattleRush) === -->
-  <script>
-  (function () {
-    function onReady(fn){
-      if(document.readyState==="complete"||document.readyState==="interactive"){setTimeout(fn,1);}
-      else{document.addEventListener("DOMContentLoaded",fn);}
-    }
-    onReady(function(){
-      // Show once per session
-      if (sessionStorage.getItem("br_popup_shown")==="1") return;
-      sessionStorage.setItem("br_popup_shown","1");
-
-      // Build overlay
-      var overlay=document.createElement("div");
-      overlay.className="af-overlay";
-      overlay.innerHTML=[
-        '<div class="af-modal" role="dialog" aria-modal="true" aria-labelledby="af-title">',
-        '  <button class="af-close" aria-label="Close">×</button>',
-        '  <div class="af-logo"><img src="assets/img/battlerush-logo.svg" alt="BattleRush"></div>',
-        '  <h2 id="af-title">Privacy & Terms</h2>',
-        '  <p class="af-text">We use basic cookies and lightweight analytics to keep gameplay fast and improve content. By continuing, you agree to our Terms and acknowledge our Privacy Policy.</p>',
-        '  <div class="af-actions">',
-        '    <button class="af-btn af-accept">Accept</button>',
-        '    <button class="af-btn af-secondary af-decline">Close</button>',
-        '  </div>',
-        '</div>'
-      ].join("");
-
-      document.body.appendChild(overlay);
-      var originalOverflow=document.body.style.overflow;
-      document.body.style.overflow="hidden";
-
-      function cleanup(){
-        document.body.style.overflow=originalOverflow || "";
-        overlay.remove();
-      }
-      function go(url){ window.location.href=url; }
-
-      overlay.querySelector(".af-close").addEventListener("click", function(){
-        cleanup(); go("privacy.html");
-      });
-      overlay.querySelector(".af-decline").addEventListener("click", function(){
-        cleanup(); go("privacy.html");
-      });
-      overlay.querySelector(".af-accept").addEventListener("click", function(){
-        cleanup(); go("terms.html");
-      });
-      document.addEventListener("keydown", function(e){
-        if(e.key==="Escape"){ cleanup(); go("privacy.html"); }
-      }, { once: true });
-    });
-  })();
-  </script>
-
   <script>document.getElementById('y').textContent=new Date().getFullYear()</script>
-  <script src="assets/js/popup.js"></script>
 </body>
 </html>
