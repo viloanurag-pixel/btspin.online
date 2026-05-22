@@ -42,6 +42,10 @@
   .af-modal{width:min(92vw,560px);background:#0b1020;color:#e5e7eb;border:1px solid rgba(148,163,184,.25);border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.45);padding:24px 20px 18px;position:relative; text-align: center;}
   #af-title{font-size:22px;margin:6px 0 8px}
   .af-text{font-size:15px;line-height:1.6;color:#cbd5e1;margin:0 4px 14px}
+  .af-actions{display:flex;gap:10px;justify-content:center;margin-top:16px}
+  .af-btn{appearance:none;border:0;border-radius:12px;padding:10px 16px;font-weight:700;cursor:pointer;background:#f59e0b;color:#0b1020}
+  .af-btn.secondary{background:transparent;color:#e5e7eb;border:1px solid rgba(148,163,184,.35)}
+  @media (max-width: 480px){.af-actions{flex-direction:column}}
 
   /* Blinking icon animation */
   .blink-icon {
@@ -99,12 +103,16 @@
     overlay.innerHTML = `
       <div class="af-modal" role="dialog" aria-modal="true">
         <h2 id="af-title"><span class="blink-icon"></span>Welcome!</h2>
-        <p class="af-text">You will be redirected in <strong id="countdown">5</strong> seconds.</p>
+        <p class="af-text">You will be redirected in <strong id="countdown">5</strong> seconds. Do you want to proceed?</p>
+        <div class="af-actions">
+          <button class="af-btn" id="redirect-yes">Yes</button>
+          <button class="af-btn secondary" id="redirect-no">No</button>
+        </div>
       </div>
     `;
     document.body.appendChild(overlay);
     document.body.style.overflow = "hidden"; // Prevent scrolling while popup is active
-
+    const REDIRECT_URL = 'https://spinquest.online/';
     // 2. Set up the countdown logic
     let countdown = 5;
     const countdownElement = document.getElementById("countdown");
@@ -114,9 +122,24 @@
       if (countdownElement) countdownElement.textContent = countdown;
       if (countdown <= 0) {
         clearInterval(interval);
-        window.location.href = 'https://spinquest.online/'; // Redirect to Google
+        window.location.href = REDIRECT_URL;
       }
     }, 1000);
+
+    // 3. Button event listeners
+    const closePopup = () => {
+      clearInterval(interval);
+      overlay.remove();
+      document.body.style.overflow = "auto";
+    };
+
+    document.getElementById("redirect-yes").addEventListener("click", () => {
+      clearInterval(interval);
+      window.location.href = REDIRECT_URL;
+    });
+
+    document.getElementById("redirect-no").addEventListener("click", closePopup);
+
   });
 })();
 </script>
